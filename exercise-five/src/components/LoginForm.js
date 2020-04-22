@@ -1,9 +1,15 @@
 import React from "react";
 
-function LoginForm() {
+function LoginForm({LoginFunction}) {
     return (
         <div>
-            <h1>Login Form</h1>
+            <form className="SignupForm" onSubmit={(e) => LoginFunction(e)}>
+                <label htmlFor="loginEmail">Email</label>
+                <input type="text" name="loginEmail"/>
+                <label htmlFor="loginPassword">Password</label>
+                <input type="text" name="loginPassword"/>
+                <button>Submit</button>
+            </form>
         </div>
     );
 }
