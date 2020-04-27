@@ -7,10 +7,15 @@ import "firebase/auth";
 import CreateAccount from "./pages/CreateAccount";
 import Login from "./pages/Login";
 import UserProfile from "./pages/UserProfile";
+
+import Header from "./components/Header";
 import './App.css';
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
+    const [loading, setLoading] = useState(true)
+    const [userInfo, setUserInfo] = useState({});
+
     const firebaseConfig = {
         apiKey: "AIzaSyDsSfPFOpEWawMyX9SMm8kSQgsAkPJ8DBw",
         authDomain: "dynweb-exercise-five.firebaseapp.com",
@@ -38,6 +43,21 @@ function App() {
                 console.log('INSTANTIATING AUTH ERROR', e);
             });
     }, [firebaseConfig]);
+
+    //check to see if user is logged in
+    //user loads page, check their status -> Set state accordingly
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged(function (user) {
+            if(user) {
+                setUserInfo(user);
+                setLoggedIn(true);
+            } else {
+                setUserInfo({});
+                setLoggedIn(false);
+            }
+            setLoading(false);
+        });
+    }, []);
 
     //login
     function LoginFunction(e) {
@@ -72,7 +92,6 @@ function App() {
     //create Account
     function CreateAccountFunction(e) {
         e.preventDefault();
-        console.log("form payload", e);
         let email = e.currentTarget.createEmail.value;
         let password = e.currentTarget.createPassword.value;
 
@@ -90,15 +109,24 @@ function App() {
 
     return (
         <div className="App">
-          <Router>
+            <Header LogoutFunction={LogoutFunction} isLoggedIn={loggedIn}/>
+            <Router>
               <Route exact path="/">
-                <UserProfile/>
+                  {!loggedIn ? (<Redirect to="/login"/>
+                  ) : (
+                      <UserProfile userInfo={userInfo}/>)}
               </Route>
               <Route exact path="/login">
-                <Login LoginFunction={LoginFunction}/>
+                  {!loggedIn ? (<Login LoginFunction={LoginFunction}/>
+                  ) : (
+                      <Redirect to="/"/>
+                  )}
               </Route>
               <Route exact path="/create-account">
-                <CreateAccount CreateAccountFunction={CreateAccountFunction}/>
+                  {!loggedIn ? (<CreateAccount CreateAccountFunction={CreateAccountFunction}/>
+                  ) : (
+                      <Redirect to="/"/>
+                  )}
               </Route>
           </Router>
         </div>

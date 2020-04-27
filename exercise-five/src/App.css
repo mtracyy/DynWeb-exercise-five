@@ -1,7 +1,30 @@
-.SignupForm {
+.EntryForm {
     display: flex;
     flex-direction: column;
     max-width: 400px;
     margin: 40px auto;
+}
+
+.EntryForm input {
+    margin-bottom: 30px;
+}
+
+.Header {
+
+}
+
+.Header_nav {
+    display: flex;
+    justify-content: flex-end;
+    max-width: 1040px;
+    margin: 0 auto;
+}
+
+.Header_nav a {
+    color: black;
+    cursor: pointer;
+    display: block;
+    margin: 10px;
+    text-decoration: underline;
 }
 
