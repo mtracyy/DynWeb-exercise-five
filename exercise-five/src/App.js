@@ -107,6 +107,8 @@ function App() {
             });
     }
 
+    if (loading) return null
+
     return (
         <div className="App">
             <Header LogoutFunction={LogoutFunction} isLoggedIn={loggedIn}/>
